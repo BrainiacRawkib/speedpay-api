@@ -40,3 +40,17 @@ def check_user_update_details(user_ins):
         logger.error('check_user_update_details@Error')
         logger.error(e)
         return False
+
+
+"""USER PERMISSION CHECKS"""
+
+def check_if_user_is_admin(user):
+    try:
+        if user.is_staff and user.is_superuser:
+            return True
+        return False
+
+    except Exception as e:
+        logger.error('check_if_user_is_admin@Error')
+        logger.error(e)
+        return False
