@@ -46,7 +46,8 @@ INSTALLED_APPS = [
     'users',
     'products',
     # third party
-    'rest_framework'
+    'rest_framework',
+    'rest_framework_simplejwt'
 ]
 
 MIDDLEWARE = [
