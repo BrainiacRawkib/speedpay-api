@@ -1,6 +1,7 @@
 """ABSTRACTING DB OPERATIONS FROM VIEWS."""
 from apiutils.utils import logger, generate_code
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from .constraint_checks import check_user_create_details
 from .models import User
 
@@ -44,6 +45,17 @@ def get_user(*args, **kwargs):
         logger.error(e)
         return None
 
+
+def get_user_access_token(access_token):
+    """Get User Access Token."""
+    try:
+        jwt_token = JWTAuthentication()
+        return jwt_token.get_user(access_token)
+
+    except Exception as e:
+        logger.error('get_user_by_access_token@Error')
+        logger.error(e)
+        return None
 
 def get_all_users():
     try:
