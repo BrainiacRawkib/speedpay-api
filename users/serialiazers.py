@@ -24,3 +24,8 @@ class UserSerializer(serializers.ModelSerializer):
             logger.error('UserSerializer.create@Error')
             logger.error(err)
             return None, str(err)
+
+
+class LoginSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    password = serializers.CharField()
