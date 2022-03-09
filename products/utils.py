@@ -8,7 +8,7 @@ from .models import Category, Product
 """CREATE"""
 def create_category(name):
     try:
-        pass
+        return Category.objects.create(name=name)
 
     except Exception as e:
         logger.error("create_category@Error")
