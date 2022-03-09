@@ -79,7 +79,7 @@ def get_product(*args, **kwargs):
 def get_all_products():
     """Get all products."""
     try:
-        return Product.objects.all()
+        return Product.objects.filter(available=True)
 
     except Exception as e:
         logger.error('get_all_products@Error')
