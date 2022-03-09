@@ -15,10 +15,8 @@ def check_category_name(name):
         return False
 
 
-def check_product_details(code, title):
+def check_product_details(title):
     try:
-        if Product.objects.filter(code=code).exists():
-            return False
         if Product.objects.filter(title=title).exists():
             return False
         return True
