@@ -1,9 +1,8 @@
 from apiutils.utils import logger
 from django.contrib.auth import authenticate
 from rest_framework import serializers
-from rest_framework_simplejwt.tokens import RefreshToken
 from .models import User
-from .utils import create_user
+from .utils import create_user, get_tokens_for_user
 
 
 # USER SERIALIZER
@@ -37,6 +36,6 @@ class LoginSerializer(serializers.Serializer):
     def validate(self, attrs):
         user = authenticate(**attrs)
         if user and user.is_active:
-            return user
+            return get_tokens_for_user(user)
         return serializers.ValidationError('Invalid Credentials.')
 
