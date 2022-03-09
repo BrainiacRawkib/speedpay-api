@@ -91,7 +91,7 @@ def get_products_by_category(category=None):
     """Get products by specified category."""
     try:
         if category:
-            return Product.objects.filter(category=category)
+            return get_all_products().filter(category=category)
         return get_all_products()
 
     except Exception as e:
