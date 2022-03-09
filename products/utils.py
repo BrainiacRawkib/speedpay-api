@@ -65,9 +65,13 @@ def get_product(*args, **kwargs):
     """Get product by title or code."""
     try:
         if kwargs['title']:
-            return Product.objects.get(title=kwargs['title'])
+            product = Product.objects.get(title=kwargs['title'])
+            if product.available:
+                return product
         if kwargs['code']:
-            return Product.objects.get(code=kwargs['code'])
+            product = Product.objects.get(code=kwargs['code'])
+            if product.available:
+                return product
         return None
 
     except Exception as e:
