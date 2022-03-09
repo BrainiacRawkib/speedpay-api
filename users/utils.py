@@ -1,5 +1,6 @@
 """ABSTRACTING DB OPERATIONS FROM VIEWS."""
 from apiutils.utils import logger, generate_code
+from .constraint_checks import check_user_create_details
 from .models import User
 
 
@@ -8,6 +9,8 @@ from .models import User
 """CREATE"""
 def create_user(first_name, last_name, username, email):
     try:
+        if not check_user_create_details(username=username, email=email):
+            return None
         return User.objects.create_user(
             code=generate_code('users', 'User'),
             first_name=first_name,
