@@ -1,5 +1,6 @@
 """ABSTRACTING DB OPERATIONS FROM VIEWS."""
 from apiutils.utils import logger, generate_code
+from rest_framework_simplejwt.tokens import RefreshToken
 from .constraint_checks import check_user_create_details
 from .models import User
 
@@ -69,3 +70,13 @@ def delete_user(user):
         logger.error('delete_user@Error')
         logger.error(e)
         return False
+
+
+"""GET TOKENS FOR AUTHENTICATED USERS"""
+def get_tokens_for_user(user):
+    refresh = RefreshToken.for_user(user)
+
+    return {
+        'refresh': str(refresh),
+        'access': str(refresh.access_token),
+    }
