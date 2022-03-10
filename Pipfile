@@ -11,6 +11,9 @@ requests = "*"
 sentry-sdk = "*"
 flake8 = "*"
 django-cors-headers = "*"
+gunicorn = "*"
+psycopg2-binary = "*"
+django-mysql = "*"
 
 [dev-packages]
 
