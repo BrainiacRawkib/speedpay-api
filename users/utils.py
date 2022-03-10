@@ -8,7 +8,7 @@ from .models import User
 """CRUD OPERATIONS"""
 
 """CREATE"""
-def create_user(first_name, last_name, username, email, password):
+def create_user(first_name, last_name, username, email, password, is_admin=False):
     try:
         if not check_user_create_details(username=username, email=email):
             return None
@@ -18,7 +18,8 @@ def create_user(first_name, last_name, username, email, password):
             last_name=last_name,
             username=username,
             email=email,
-            password=password
+            password=password,
+            is_admin=is_admin
         )
         token, created = Token.objects.get_or_create(user=user)
         return user, token
