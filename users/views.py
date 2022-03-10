@@ -95,8 +95,6 @@ class UserAPIView(APIView):
             error_code=ErrorCodes.GENERIC_ERROR
         )
 
-
-
     def put(self, request, *args, **kwargs):
         pass
 
