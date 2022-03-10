@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.timezone import now
+from users.models import User
 
 
 class Category(models.Model):
@@ -10,6 +11,7 @@ class Category(models.Model):
 
 
 class Product(models.Model):
+    user = models.ForeignKey(User, related_name='products', on_delete=models.SET_NULL, null=True)
     code = models.CharField(max_length=20, unique=True)
     category = models.ForeignKey(Category, related_name='products', on_delete=models.CASCADE)
     title = models.CharField(max_length=30, unique=True)

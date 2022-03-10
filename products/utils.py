@@ -19,17 +19,18 @@ def create_category(name):
         return None
 
 
-def create_product(category, title, price, quantity):
+def create_product(category, title, price, quantity, description):
     try:
-        if check_product_details(title=title):
+        cat = get_category(category)
+        if not check_product_details(title=title):
             return None
         return Product.objects.create(
             code=generate_code('products', 'Product'),
             category=category,
             title=title,
             price=price,
-            quantity=quantity
-
+            quantity=quantity,
+            description=description
         )
 
     except Exception as e:
@@ -39,10 +40,11 @@ def create_product(category, title, price, quantity):
 
 """RETRIEVE"""
 
-def get_category(name):
+def get_category(category_id):
     """Get a specific category."""
     try:
-        return Category.objects.get(name=name)
+        category = Category.objects.get(id=id)
+        return category
 
     except Exception as e:
         logger.error('get_category@Error')
@@ -61,15 +63,11 @@ def get_categories():
         return []
 
 
-def get_product(*args, **kwargs):
+def get_product(title):
     """Get product by title or code."""
     try:
-        if kwargs['title']:
-            product = Product.objects.get(title=kwargs['title'])
-            if product.available:
-                return product
-        if kwargs['code']:
-            product = Product.objects.get(code=kwargs['code'])
+        if title:
+            product = Product.objects.get(title=title)
             if product.available:
                 return product
         return None
@@ -81,7 +79,7 @@ def get_product(*args, **kwargs):
 
 
 def get_all_products():
-    """Get all products."""
+    """Get all available products."""
     try:
         return Product.objects.filter(available=True)
 
@@ -103,11 +101,17 @@ def get_products_by_category(category=None):
         logger.error(e)
         return []
 
+
 """UPDATE"""
 
-def update_product(product, validated_data):
+def update_product(product, validated_data, user=None):
     """Update a product."""
     try:
+        if user:
+            product.quantity -= validated_data.get('quantity', None)
+            product.user = user
+            product.save()
+            return product
         product.price = validated_data.get('price', product.price)
         product.quantity = validated_data.get('quantity', product.quantity)
         product.description = validated_data.get('description', product.description)
@@ -123,13 +127,13 @@ def update_product(product, validated_data):
 """DELETE"""
 
 def delete_product(product):
-    """Delete a product."""
+    """Delete a product. Set a product available=False to delete the product."""
     try:
         product.available = False
         product.save()
-        return product
+        return True
 
     except Exception as e:
         logger.error('delete_product@Error')
         logger.error(e)
-        return None
+        return False
