@@ -19,7 +19,7 @@ def create_user(first_name, last_name, username, email, password, is_staff=False
             username=username,
             email=email,
             password=password,
-            is_staff=is_staff,
+            is_staff=is_staff,  # Set is_staff and is_superuser to True if you want to create an admin
             is_superuser=is_superuser
         )
         token, created = Token.objects.get_or_create(user=user)
