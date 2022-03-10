@@ -14,12 +14,10 @@ def check_user_create_details(*args, **kwargs):
             return False
         if User.objects.filter(email=kwargs['email']).exists():
             return False
-        if User.objects.filter(contact=kwargs['contact']).exists():
-            return False
         return True
 
     except Exception as e:
-        logger.error('check_user_payload_detail@Error')
+        logger.error('check_user_create_details@Error')
         logger.error(e)
         return False
 

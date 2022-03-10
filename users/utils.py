@@ -1,5 +1,6 @@
 """ABSTRACTING DB OPERATIONS FROM VIEWS."""
 from apiutils.utils import logger, generate_code
+from rest_framework.authtoken.models import Token
 from .constraint_checks import check_user_create_details
 from .models import User
 
@@ -7,17 +8,22 @@ from .models import User
 """CRUD OPERATIONS"""
 
 """CREATE"""
-def create_user(first_name, last_name, username, email):
+def create_user(first_name, last_name, username, email, password, is_staff=False, is_superuser=False):
     try:
         if not check_user_create_details(username=username, email=email):
             return None
-        return User.objects.create_user(
+        user = User.objects.create_user(
             code=generate_code('users', 'User'),
             first_name=first_name,
             last_name=last_name,
             username=username,
-            email=email
+            email=email,
+            password=password,
+            is_staff=is_staff,  # Set is_staff and is_superuser to True if you want to create an admin
+            is_superuser=is_superuser
         )
+        token, created = Token.objects.get_or_create(user=user)
+        return user, token
 
     except Exception as e:
         logger.error('create_user@Error')
@@ -40,6 +46,23 @@ def get_user(*args, **kwargs):
 
     except Exception as e:
         logger.error('get_user@Error')
+        logger.error(e)
+        return None
+
+
+def get_user_by_access_token(token):
+    """Get a user by the access token given."""
+    try:
+        key = token.split()
+        access_token = key[1]
+        token = Token.objects.get(key=access_token)
+        user = token.user
+        if user and user.is_active:
+            return user
+        return None
+
+    except Exception as e:
+        logger.error('get_user_by_access_token@Error')
         logger.error(e)
         return None
 
@@ -69,8 +92,3 @@ def delete_user(user):
         logger.error('delete_user@Error')
         logger.error(e)
         return False
-
-
-"""GET TOKENS FOR AUTHENTICATED USERS"""
-def get_tokens_for_user(user):
-    pass
