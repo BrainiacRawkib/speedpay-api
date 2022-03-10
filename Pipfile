@@ -14,6 +14,7 @@ django-cors-headers = "*"
 gunicorn = "*"
 psycopg2-binary = "*"
 django-mysql = "*"
+django-on-heroku = "*"
 
 [dev-packages]
 
