@@ -1,8 +1,11 @@
+from rest_framework.authtoken.models import Token
+from rest_framework.authtoken.views import ObtainAuthToken
+
 from apiutils.views import http_response
 from apiutils.error_codes import ErrorCodes
 from rest_framework.views import APIView
 from rest_framework import status
-from .serialiazers import UserSerializer, LoginSerializer
+from .serialiazers import UserSerializer
 from .utils import get_user, get_all_users, get_user_by_access_token
 
 
@@ -57,13 +60,22 @@ class UserAPIView(APIView):
         pass
 
 
-class LoginAPIView(APIView):
+class LoginAPIView(ObtainAuthToken):
+
     def post(self, request, *args, **kwargs):
         payload = request.data
-        serializer = LoginSerializer(data=payload)
-        if serializer.is_valid():
-            return http_response(
-                'Login Successful',
-                status=status.HTTP_200_OK,
-                data=payload
-            )
+        context = {'request': request}
+        serializer = self.serializer_class(data=payload, context=context)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        token, created = Token.objects.get_or_create(user=user)
+        data = {
+            'token': token.key,
+            'user_id': user.pk,
+            'email': user.email
+        }
+        return http_response(
+            'Login Successful',
+            status=status.HTTP_200_OK,
+            data=data
+        )
