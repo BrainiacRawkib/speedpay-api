@@ -9,7 +9,7 @@ from .models import Category, Product
 """CREATE"""
 def create_category(name):
     try:
-        if check_category_name(name=name):
+        if not check_category_name(name):
             return None
         return Category.objects.create(name=name)
 
