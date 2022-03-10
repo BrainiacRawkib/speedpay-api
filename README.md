@@ -12,4 +12,5 @@ https://speedpay.herokuapp.com/api/products/
 
 # admin details
 username: admin
+
 email: admin@speedpay.com
