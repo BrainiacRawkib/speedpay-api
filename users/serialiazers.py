@@ -2,7 +2,7 @@ from apiutils.utils import logger
 from django.contrib.auth import authenticate
 from rest_framework import serializers
 from .models import User
-from .utils import create_user, get_tokens_for_user
+from .utils import create_user
 
 
 # USER SERIALIZER
@@ -11,7 +11,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = [
-            'code', 'first_name', 'last_name', 'username', 'email', 'password', 'contact'
+            'code', 'first_name', 'last_name', 'username', 'email', 'password'
         ]
         read_only_fields = ['code']
         extra_kwargs = {
