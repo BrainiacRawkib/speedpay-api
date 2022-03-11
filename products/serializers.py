@@ -27,6 +27,7 @@ class ProductSerializer(serializers.ModelSerializer):
         fields = ['code', 'category', 'title', 'description', 'price', 'quantity', 'available',
                   'created_at', 'updated_at']
         read_only_fields = ['code', 'created_at', 'updated_at']
+        depth = 1
 
     def create(self, validated_data):
         try:

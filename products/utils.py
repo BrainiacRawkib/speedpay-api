@@ -26,7 +26,7 @@ def create_product(category, title, price, quantity, description):
             return None
         return Product.objects.create(
             code=generate_code('products', 'Product'),
-            category=category,
+            category=cat,
             title=title,
             price=price,
             quantity=quantity,
@@ -40,11 +40,12 @@ def create_product(category, title, price, quantity, description):
 
 """RETRIEVE"""
 
-def get_category(category_id):
+def get_category(cat_name):
     """Get a specific category."""
     try:
-        category = Category.objects.get(id=id)
-        return category
+        if cat_name:
+            return Category.objects.get(name=cat_name)
+        return None
 
     except Exception as e:
         logger.error('get_category@Error')

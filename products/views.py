@@ -6,11 +6,26 @@ from users.constraint_checks import check_if_user_is_admin
 from users.utils import get_user_by_access_token
 from .serializers import CategorySerializer, ProductSerializer
 from .utils import get_all_products, get_categories, get_category, update_product, \
-    delete_product, get_product
+    delete_product, get_product, get_products_by_category
 
 
 class CategoryAPIView(APIView):
     def get(self, request, *args, **kwargs):
+        query_params = request.query_params
+        if query_params:
+            category_name = query_params['name']
+            category = get_category(category_name)
+            if category:
+                serializer = CategorySerializer(category)
+                return http_response(
+                    'Category Retrieved',
+                    status=status.HTTP_200_OK,
+                    data=serializer.data
+                )
+            return http_response(
+                "Category not found.",
+                status=status.HTTP_404_NOT_FOUND
+            )
         categories = get_categories()
         serializer = CategorySerializer(categories, many=True)
         return http_response(
@@ -73,6 +88,21 @@ class CategoryAPIView(APIView):
 
 class ProductAPIView(APIView):
     def get(self, request, *args, **kwargs):
+        query_params = request.query_params
+        if query_params:
+            category = get_category(query_params['name'])
+            if category:
+                products = get_products_by_category(category=category)
+                serializer = ProductSerializer(products, many=True)
+                return http_response(
+                    f'{category} Products retrieved.',
+                    status=status.HTTP_200_OK,
+                    data=serializer.data
+                )
+            return http_response(
+                f'{category} not found.',
+                status=status.HTTP_404_NOT_FOUND,
+            )
         products = get_all_products()
         serializer = ProductSerializer(products, many=True)
         return http_response(
@@ -104,11 +134,7 @@ class ProductAPIView(APIView):
         payload = request.data
         serializer = ProductSerializer(data=payload)
 
-        # # get category for product
-        # category = get_category(payload['category'])
-        # payload['category'] = category.pk
-
-        #check for missing keys
+        # check for missing keys
         required_keys = ['title', 'category', 'price', 'quantity', 'description']
         missing_keys = validate_keys(payload, required_keys)
         if missing_keys:
@@ -120,9 +146,8 @@ class ProductAPIView(APIView):
 
         if serializer.is_valid():
             data = serializer.validated_data
-            data['category'] = get_category(payload['category'])
+            data['category'] = payload['category']['name']
             created_product, _ = serializer.create(data)
-
             if not created_product:
                 return http_response(
                     'Internal Server Error.',
