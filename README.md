@@ -14,3 +14,5 @@ https://speedpay.herokuapp.com/api/products/
 username: admin
 
 email: admin@speedpay.com
+
+password: brainy1998
