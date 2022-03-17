@@ -21,3 +21,11 @@ username: admin
 email: admin@speedpay.com
 
 password: brainy1998
+
+
+# aws root user details
+users 
+  ubuntu newadmin
+ 
+ password:
+    brainy1998
