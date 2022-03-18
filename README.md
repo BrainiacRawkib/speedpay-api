@@ -25,7 +25,7 @@ password: brainy1998
 
 # aws root user details
 users 
-  ubuntu newadmin
+  ubuntu newadmin speedpayweb
  
  password:
     brainy1998
