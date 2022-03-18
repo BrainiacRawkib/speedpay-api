@@ -24,7 +24,8 @@ password: brainy1998
 
 
 # aws root user details
-users 
+users
+
   54.208.193.90 ---> ubuntu newadmin 
   
   54.156.104.107 ---> ubuntu useradmin speedpayweb 
