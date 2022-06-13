@@ -15,13 +15,12 @@ pipeline {
         stage('Deploy') {
             steps {
                 sh ' \
-                ssh ubuntu@100.24.53.222 
+                ssh ubuntu@100.24.53.222 \
                 "cd speedpay-api; \
                 source venv/bin/activate; \
                 git pull origin develop; \
                 pip install -r requirements.txt --no-warn-script-location; \
-                "
-                '
+                "'
             }
         }
     }
