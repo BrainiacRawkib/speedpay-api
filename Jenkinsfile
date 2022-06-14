@@ -3,8 +3,8 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh "echo 'pip install --upgrade pip'"
-                sh "echo 'pip install requirements.txt'"
+                sh "pip install --upgrade pip"
+                sh "pip install requirements.txt"
             }
         }
         stage('Test') {
@@ -14,7 +14,11 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                sh 'echo "welcome"'
+                sh 'ssh ubuntu@100.24.53.222 \
+                "cd speedpay-api; \
+                source venv/bin/activate; \
+                git pull origin develop; \
+                pip install -r requirements.txt --no-warn-script-location "'
             }
         }
     }
