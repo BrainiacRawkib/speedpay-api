@@ -13,6 +13,10 @@ pipeline {
             }
         }
         stage('Deploy') {
+            input {
+                message "Deploy to Production server"
+                ok "Yes"
+            }
             steps {
                 sh 'ssh -o StrictHostKeyChecking=no ubuntu@100.24.53.222 "cd speedpay-api; \
                 source venv/bin/activate; \
