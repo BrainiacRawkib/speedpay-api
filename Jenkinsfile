@@ -14,12 +14,12 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                sh 'ssh -o StrictHostKeyChecking=no ubuntu@100.24.53.222 \
+                sh 'ssh -o StrictHostKeyChecking=no ubuntu@100.24.53.222 -y \
                 "cd speedpay-api; \
                 source venv/bin/activate; \
                 git pull origin develop; \
                 pip3 install -r requirements.txt --no-warn-script-location; \
-                deactivate"'
+                deactivate "'
             }
         }
     }
