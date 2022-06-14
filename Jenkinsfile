@@ -4,7 +4,7 @@ pipeline {
         stage('Build') {
             steps {
                 sh "pip3 install --upgrade pip"
-                sh "pip3 install -r requirements.txt"
+                sh "pip install -r requirements.txt"
             }
         }
         stage('Test') {
@@ -12,14 +12,16 @@ pipeline {
                 sh 'echo "Testing"'
             }
         }
-        // stage('Deploy') {
-        //     steps {
-        //         sh 'ssh ubuntu@100.24.53.222 \
-        //         "cd speedpay-api; \
-        //         source venv/bin/activate; \
-        //         git pull origin develop; \
-        //         pip install -r requirements.txt --no-warn-script-location "'
-        //     }
-        // }
+        stage('Deploy') {
+            steps {
+                sh 'ssh ubuntu@100.24.53.222 \
+                "cd speedpay-api; \
+                source venv/bin/activate; \
+                git pull origin develop; \
+                pip3 install -r requirements.txt --no-warn-script-location;
+                deactivate
+                "'
+            }
+        }
     }
 }
