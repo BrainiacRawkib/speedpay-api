@@ -12,20 +12,6 @@ pipeline {
                 sh 'echo "Testing"'
             }
         }
-        stage('Deploy to develop server') {
-            input {
-                message "Deploy to stage server"
-                ok "Yes"
-            }
-            steps {
-                sh 'ssh -o StrictHostKeyChecking=no ubuntu@100.24.53.222 "cd speedpay-api; \
-                source venv/bin/activate; \
-                git pull origin develop; \
-                pip3 install -r requirements.txt --no-warn-script-location; \
-                deactivate "'
-            }
-            
-        }
         stage('Deploy to main server') {
             input {
                 message "Deploy to live server"
