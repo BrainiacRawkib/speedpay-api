@@ -14,7 +14,7 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                sh 'ssh ubuntu@100.24.53.222 \
+                sh 'ssh -o StrictHostKeyChecking=no ubuntu@100.24.53.222 \
                 "cd speedpay-api; \
                 source venv/bin/activate; \
                 git pull origin develop; \
