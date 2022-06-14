@@ -18,7 +18,7 @@ pipeline {
                 "cd speedpay-api; \
                 source venv/bin/activate; \
                 git pull origin develop; \
-                pip3 install -r requirements.txt --no-warn-script-location;
+                pip3 install -r requirements.txt --no-warn-script-location; \
                 deactivate
                 "'
             }
